@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link rel="icon" href="./images/favicon.ico" />
+
+  <link rel="stylesheet" href="./index.css" />
+  <script src="./index.js"></script>
+
+  <title>TLEnfo</title>
+</head>
+
+<body class="TheBody">
+  <div class="App">
+    <img src="./images/logo-noBack.png" class="App-logo" alt="logo" />
+    <h1 class="pageName">TLEnfo</h1>
+
+    <div class="btn-group" style="width:20%">
+      <button style="width:33%;" onclick="convertTo('TLE');" id="TLEButton" class="firstButton ">
+        TLE explain
+      </button>
+      <button style="width:33%" onclick="convertTo('Cartesian')" id="CartesianButton">
+        Cartesian
+      </button>
+      <button style="width:33%" onclick="convertTo('Keplarian')" id="KeplarianButton" class="lastButton">
+        Keplarian
+      </button>
+    </div>
+
+    <textarea id="textTLE" rows="4" placeholder="insert your TLE here">
+1 44236C 19029B   20071.51904094  .00005323  00000-0  78478-4 0   714
+2 44236  53.0049 284.5500 0007211 319.6814 226.3936 15.54732759    19
+    </textarea>
+
+    <input class="uploadTLE" type="file" name="file" id="files" accept=".txt" onchange="readBlob()" />
+
+    <button id="convertButton" onclick="convertFunc()">
+      Convert!
+    </button>
+
+    <div id="KeplerStat">
+      <div id="ExitButton" onclick="Exit('KeplerStat')">X</div>
+      <center>
+        <table style="width:85%;" cellpadding="10">
+          <tr>
+            <th>A - Semi major axis</th>
+            <th>E - Eccentricity</th>
+            <th>I - Inclination</th>
+            <th>&Omega; - Angle to ascending node</th>
+            <th>&omega; - Argument of Perigee</th>
+            <th>ν - True anomaly</th>
+          </tr>
+          <tr>
+            <td class="keplerParam" id="kepler_1">1</td>
+            <td class="keplerParam" id="kepler_2">2</td>
+            <td class="keplerParam" id="kepler_3">3</td>
+            <td class="keplerParam" id="kepler_4">4</td>
+            <td class="keplerParam" id="kepler_5">5</td>
+            <td class="keplerParam" id="kepler_6">6</td>
+          </tr>
+        </table>
+        <button id="convertButton" onclick="convertBackToTLE()">
+          Convert!
+        </button>
+        <br /><br />
+        <div id="backTLE"></div>
+      </center>
+    </div>
+
+    <div id="CartesianStat">
+      <div id="ExitButton" onclick="Exit('CartesianStat')">X</div>
+      <center>
+        <table style="width:85%;" cellpadding="10">
+          <tr>
+            <th></th>
+            <th>Location Vector</th>
+            <th></th>
+            <th></th>
+            <th>Velocity Vector</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td style="border-left: black solid 10px;" class="CartesianParam" id="Cart_1">1</td>
+            <td class="CartesianParam" id="Cart_2">1</td>
+            <td style="border-right: black solid 10px;" class="CartesianParam" id="Cart_3">1</td>
+            <td style="border-left: black solid 10px;" class="CartesianParam" id="Cart_4">1</td>
+            <td class="CartesianParam" id="Cart_5">1</td>
+            <td style="border-right: black solid 10px;" class="CartesianParam" id="Cart_6">1</td>
+          </tr>
+        </table>
+      </center>
+    </div>
+
+
+    <div id="TLEprops">
+      <div id="ExitButton" onclick="Exit('TLEprops')">X</div>
+      <div id="firstLine">
+        <center>
+          <p class="InfoTLEExplenation">First Line</p>
+          <table style="width:80%;">
+            <tr>
+              <th>Value</th>
+              <th>Meaning</th>
+            </tr>
+            <tr>
+              <td width="30%" class="parameter" id="param_1_1"></td>
+              <td width="70%" class="explainParam">Line number</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_2"></td>
+              <td class="explainParam">Satellite catalog number</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_3"></td>
+              <td class="explainParam">Classification</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_4"></td>
+              <td class="explainParam">last two digits of lunch year</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_5"></td>
+              <td class="explainParam">launch number of the year</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_6"></td>
+              <td class="explainParam">piece of the launch</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_7"></td>
+              <td class="explainParam">last two digits of Epoch year</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_8"></td>
+              <td class="explainParam">day of the year Epoch</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_9"></td>
+              <td class="explainParam">First Derivative of Mean Motion</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_10"></td>
+              <td class="explainParam">Second Derivative of Mean Motion</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_11"></td>
+              <td class="explainParam">Drag Term</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_12"></td>
+              <td class="explainParam">Ephemeris type</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_13"></td>
+              <td class="explainParam">Element set number</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_1_14"></td>
+              <td class="explainParam">Checksum</td>
+            </tr>
+          </table>
+        </center>
+      </div>
+      <!-- second line -->
+      <div id="SencondLine">
+        <center>
+          <p class="InfoTLEExplenation">Second Line</p>
+          <table style="width:80%;">
+            <tr>
+              <th>Value</th>
+              <th>Meaning</th>
+            </tr>
+            <tr>
+              <td width="30%" class="parameter" id="param_2_1"></td>
+              <td width="70%" class="explainParam">Line number</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_2"></td>
+              <td class="explainParam">Satellite catalog number</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_3"></td>
+              <td class="explainParam">Inclination (degrees)</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_4"></td>
+              <td class="explainParam">Ascending Node (degrees - omega)</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_5"></td>
+              <td class="explainParam">Eccentricity (e)</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_6"></td>
+              <td class="explainParam">Argument of Perigee (small omega)</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_7"></td>
+              <td class="explainParam">Mean Anomaly (degrees)</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_8"></td>
+              <td class="explainParam">Mean Motion (revolutions per day)</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_9"></td>
+              <td class="explainParam">Revolution number (revolutions)</td>
+            </tr>
+            <tr>
+              <td class="parameter" id="param_2_10"></td>
+              <td class="explainParam">Checksum</td>
+            </tr>
+          </table>
+        </center>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
